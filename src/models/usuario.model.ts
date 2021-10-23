@@ -39,7 +39,7 @@ export class Usuario extends Entity {
     type: 'string',
     required: true,
   })
-  email: string;
+  correo: string;
 
   @property({
     type: 'string',
@@ -54,9 +54,9 @@ export class Usuario extends Entity {
 
   @property({
     type: 'string',
-    required: true,
+    required: false,
   })
-  clave: string;
+  clave?: string;
 
   @hasMany(() => Rol, {through: {model: () => UsuarioRol, keyFrom: 'id_usuario', keyTo: 'id_rol'}})
   roles: Rol[];
