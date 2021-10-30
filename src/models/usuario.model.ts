@@ -30,7 +30,7 @@ export class Usuario extends Entity {
   documento: string;
 
   @property({
-    type: 'date',
+    type: 'string',
     required: true,
   })
   fechaNacimiento: string;
@@ -50,7 +50,7 @@ export class Usuario extends Entity {
     type: 'boolean',
     default: true,
   })
-  estado: boolean;
+  estado?: boolean;
 
   @property({
     type: 'string',
