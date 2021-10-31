@@ -1,6 +1,6 @@
 import {injectable, /* inject, */ BindingScope} from '@loopback/core';
 import {Configuracion} from '../llaves/configuracion';
-import {NotificacionCorreo} from '../models';
+import {NotificacionCorreo, NotificacionSms} from '../models';
 const fetch = require('node-fetch');
 
 @injectable({scope: BindingScope.TRANSIENT})
@@ -18,4 +18,13 @@ export class NotificacionesService {
       console.log(res.text());
     })
   }
+
+  EnviarSms(datos: NotificacionSms){
+    let url = `${Configuracion.urlSms}?${Configuracion.destinoArg}=${datos.destino}&${Configuracion.mensajeArg}=${datos.mensaje}&${Configuracion.hashArg}=${Configuracion.hashNotificacion}`;
+    fetch(url)
+    .then((res:any) => {
+      console.log(res.text());
+    })
+  }
+
 }

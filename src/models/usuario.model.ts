@@ -43,8 +43,9 @@ export class Usuario extends Entity {
 
   @property({
     type: 'string',
+    required: true
   })
-  celular?: string;
+  celular: string;
 
   @property({
     type: 'boolean',
