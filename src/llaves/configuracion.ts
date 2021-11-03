@@ -12,4 +12,8 @@ export namespace Configuracion{
   export const asuntoArg = "asunto";
   export const mensajeArg = "mensaje";
   export const hashArg = "hash";
+  export const urlCrearToken = "http://localhost:5001/crear-token";
+  export const nombreArg = "nombre";
+  export const idArg = "id";
+  export const id_rolArg = "id_rol";
 }
