@@ -6,3 +6,4 @@ export * from './permiso-rol.controller';
 export * from './rol.controller';
 export * from './usuario.controller';
 export * from './permiso.controller';
+export * from './session-validator.controller';

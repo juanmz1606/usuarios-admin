@@ -26,8 +26,19 @@ export class SesionUsuariosService {
         clave: credenciales.clave
       }
     });
+    console.log(usuario?.nombre);
     return usuario
   }
+
+  // async GenerarToken(datos: Usuario): Promise<string> {
+  //   let url = `${Configuracion.urlCrearToken}?${Configuracion.nombreArg}=${datos.nombre}&${Configuracion.idArg}=${datos._id}&${Configuracion.id_rolArg}=${Configuracion.rolUser}`;
+  //   let token = "";
+  //   await fetch(url)
+  //     .then(async (res: any) => {
+  //       token = await res.text()
+  //     })
+  //   return token;
+  // }
 
   async GenerarToken(usuario: Usuario): Promise<string> {
     let token = "";
@@ -58,4 +69,13 @@ export class SesionUsuariosService {
       return false;
   }
 
+  async ValidarToken(tk: string): Promise<boolean> {
+    let url = `${Configuracion.urlVerificarToken}?${Configuracion.arg_token}=${tk}`;
+    let resp = "";
+    await fetch(url)
+      .then(async (res: any) => {
+        resp = await res.text()
+      })
+    return resp == "OK";
+  }
 }

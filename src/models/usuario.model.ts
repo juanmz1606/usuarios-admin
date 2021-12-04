@@ -49,7 +49,7 @@ export class Usuario extends Entity {
 
   @property({
     type: 'boolean',
-    default: true,
+    default: false,
   })
   estado?: boolean;
 

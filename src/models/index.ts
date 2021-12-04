@@ -9,3 +9,4 @@ export * from './notificacion-correo.model';
 export * from './credenciales-recuperar-clave.model';
 export * from './notificacion-sms.model';
 export * from './arreglo-roles.model';
+export * from './token-validator.model';

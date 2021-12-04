@@ -21,13 +21,15 @@ import {
 import {Configuracion} from '../llaves/configuracion';
 import {Credenciales, CredencialesRecuperarClave, NotificacionCorreo, NotificacionSms, Usuario} from '../models';
 import {CambioClave} from '../models/cambio-clave.model';
-import {UsuarioRepository} from '../repositories';
+import {UsuarioRepository, UsuarioRolRepository} from '../repositories';
 import {AdministradorClavesService, NotificacionesService, SesionUsuariosService} from '../services';
 
 export class UsuarioController {
   constructor(
     @repository(UsuarioRepository)
     public usuarioRepository : UsuarioRepository,
+    @repository(UsuarioRolRepository)
+    public usuarioRolRepository : UsuarioRolRepository,
     @service(AdministradorClavesService)
     public servicioClaves: AdministradorClavesService,
     @service(NotificacionesService)
@@ -53,6 +55,7 @@ export class UsuarioController {
       },
     })
     usuario: Omit<Usuario, '_id'>,
+
   ): Promise<Usuario> {
     let clave = this.servicioClaves.CrearClaveAleatoria();
     let claveCifrada = this.servicioClaves.CifrarTexto(clave);
@@ -189,14 +192,16 @@ export class UsuarioController {
     credenciales: Credenciales,
   ): Promise<Object | null> {
     let usuario = await this.servicioSesionUsuario.IdentificarUsuario(credenciales)
+
     let tk = "";
+
     if (usuario){
       tk = await this.servicioSesionUsuario.GenerarToken(usuario);
       usuario.clave = "";
     }
     return {
       token: tk,
-      usuario: usuario
+      usuario: usuario,
     };
   }
 
