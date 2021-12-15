@@ -27,16 +27,16 @@ import {AdministradorClavesService, NotificacionesService, SesionUsuariosService
 export class UsuarioController {
   constructor(
     @repository(UsuarioRepository)
-    public usuarioRepository : UsuarioRepository,
+    public usuarioRepository: UsuarioRepository,
     @repository(UsuarioRolRepository)
-    public usuarioRolRepository : UsuarioRolRepository,
+    public usuarioRolRepository: UsuarioRolRepository,
     @service(AdministradorClavesService)
     public servicioClaves: AdministradorClavesService,
     @service(NotificacionesService)
     public servicioNotificaciones: NotificacionesService,
     @service(SesionUsuariosService)
     private servicioSesionUsuario: SesionUsuariosService
-  ) {}
+  ) { }
 
   @post('/usuarios')
   @response(200, {
@@ -57,11 +57,21 @@ export class UsuarioController {
     usuario: Omit<Usuario, '_id'>,
 
   ): Promise<Usuario> {
+    let usuarioExistente = await this.usuarioRepository.findOne({
+      where: {
+        correo: usuario.correo
+      }
+    });
+
+    if (usuarioExistente) {
+      return usuarioExistente;
+    }
+
     let clave = this.servicioClaves.CrearClaveAleatoria();
     let claveCifrada = this.servicioClaves.CifrarTexto(clave);
     usuario.clave = claveCifrada;
     let usuarioCreado = await this.usuarioRepository.create(usuario);
-    if(usuarioCreado){
+    if (usuarioCreado) {
       let datos = new NotificacionCorreo();
       datos.destinatario = usuario.correo;
       datos.asunto = Configuracion.asuntoCreacionUsuario;
@@ -195,7 +205,7 @@ export class UsuarioController {
 
     let tk = "";
 
-    if (usuario){
+    if (usuario) {
       tk = await this.servicioSesionUsuario.GenerarToken(usuario);
       usuario.clave = "";
     }
@@ -255,9 +265,8 @@ export class UsuarioController {
     });
     if (usuario) {
       let clave = this.servicioClaves.CrearClaveAleatoria();
-      console.log(clave);
       usuario.clave = this.servicioClaves.CifrarTexto(clave);
-      await this.usuarioRepository.updateById(usuario._id,usuario)
+      await this.usuarioRepository.updateById(usuario._id, usuario)
       let datos = new NotificacionSms();
       datos.destino = usuario.celular;
       datos.mensaje = `${Configuracion.saludo} ${usuario.nombre} ${usuario.apellidos}. ${Configuracion.mensajeRecuperarClave} ${clave}`;

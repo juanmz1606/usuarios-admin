@@ -26,7 +26,6 @@ export class SesionUsuariosService {
         clave: credenciales.clave
       }
     });
-    console.log(usuario?.nombre);
     return usuario
   }
 
